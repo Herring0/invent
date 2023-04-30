@@ -2,6 +2,9 @@ package com.herring.invent.services;
 
 import com.herring.invent.models.Category;
 import com.herring.invent.repository.CategoriesRepository;
+import com.herring.invent.security.jwt.AuthEntryPointJwt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Iterator;
@@ -26,6 +29,8 @@ public class CategoriesService {
         return categoriesRepository.getCategoryByName(name);
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+
     private List<Category> getTree(List<Category> dataset) {
         Iterator<Category> itr = dataset.iterator();
 
@@ -36,7 +41,6 @@ public class CategoriesService {
                 itr.remove();
             }
         }
-
         return dataset;
     }
 
@@ -54,7 +58,6 @@ public class CategoriesService {
                 target = cat;
             }
         }
-
         return target;
     }
 

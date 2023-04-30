@@ -10,22 +10,17 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.math.BigInteger;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 @Component
 public class CrtUtils {
     private CertificateFactory fac;
-    private FileInputStream is;
-    private X509Certificate cert;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
@@ -47,14 +42,13 @@ public class CrtUtils {
                 String owner = "";
                 Date notAfter;
                 ECertType type = ECertType.UNKNOWN;
-                boolean isValid = false;
+                boolean isValid;
 
-                is = new FileInputStream(file);
-                cert = (X509Certificate) fac.generateCertificate(is);
+                FileInputStream is = new FileInputStream(file);
+                X509Certificate cert = (X509Certificate) fac.generateCertificate(is);
                 notAfter = cert.getNotAfter();
                 SN = cert.getSerialNumber().toString();
                 String subject = cert.getSubjectX500Principal().toString().replace("\\", "");
-                logger.info(subject);
                 String CN = subject.split("CN=")[1].split(",")[0];
                 String O = subject.split("O=")[1].split(",")[0];
 
@@ -74,8 +68,6 @@ public class CrtUtils {
                     } else if (subject.split("SURNAME=").length == 1
                             && subject.split("GIVENNAME=").length == 1) {
                         type = ECertType.ANON;
-                    } else {
-                        type = ECertType.UNKNOWN;
                     }
                 }
                 try {
@@ -84,7 +76,6 @@ public class CrtUtils {
                 } catch (CertificateExpiredException e) {
                     isValid = false;
                 }
-
 
                 certs.add(new Certificate(SN, owner, notAfter, type, isValid));
 

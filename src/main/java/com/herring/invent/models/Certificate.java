@@ -1,10 +1,11 @@
 package com.herring.invent.models;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.math.BigInteger;
 import java.util.Date;
 
+@Getter @Setter
 public class Certificate {
 
     private String SN;
@@ -30,45 +31,5 @@ public class Certificate {
         this.owner = owner;
         this.notAfter = notAfter;
         this.isValid = isValid;
-    }
-
-    public String getSN() {
-        return SN;
-    }
-
-    public void setSN(String SN) {
-        this.SN = SN;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public Date getNotAfter() {
-        return notAfter;
-    }
-
-    public void setNotAfter(Date notAfter) {
-        this.notAfter = notAfter;
-    }
-
-    public ECertType getType() {
-        return type;
-    }
-
-    public void setType(ECertType type) {
-        this.type = type;
-    }
-
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        isValid = valid;
     }
 }
